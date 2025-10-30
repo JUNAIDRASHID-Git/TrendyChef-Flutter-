@@ -1,0 +1,25 @@
+User-agent: *
+# Allow all main content pages
+Allow: /
+
+# Disallow admin, account internals, cart checkout, search queries if irrelevant to SEO
+Disallow: /admin/
+Disallow: /login/
+Disallow: /register/
+Disallow: /account/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /orders/
+Disallow: /api/
+Disallow: /search/
+
+# (Optional) If you have parameters or filters that produce duplicate content,
+# block crawling of parameter URLs. E.g:
+Disallow: /*?*
+Disallow: /*&*
+
+# Sitemap
+Sitemap: https://trendy-c.com/sitemap.xml
+
+# Crawl-delay (optional, in case your server is limited)
+# Crawl-delay: 10

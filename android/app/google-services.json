@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "846595955923",
+    "project_id": "trendy-admin-83285",
+    "storage_bucket": "trendy-admin-83285.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846595955923:android:735aa6f24882970fa70826",
+        "android_client_info": {
+          "package_name": "com.example.trendychef"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "846595955923-selba28qrs3cpqoe50v0arf3p1jkmn5c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWnU0aRSi0EzG8K0XZ3j06-ay_Q2ysMbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846595955923-selba28qrs3cpqoe50v0arf3p1jkmn5c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
