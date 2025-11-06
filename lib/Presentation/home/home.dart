@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trendychef/Presentation/category/category.dart';
 import 'package:trendychef/Presentation/home/bloc/home_event.dart';
+import 'package:trendychef/Presentation/home/widget/sections/carousel/cubit/carousel_cubit.dart';
 import 'package:trendychef/Presentation/widgets/cards/product_card.dart';
 import 'package:trendychef/Presentation/home/widget/shimmer/home_shimmer.dart';
 import 'package:trendychef/Presentation/home/widget/sections/carousel/auto_crousel_slider.dart';
@@ -20,49 +21,105 @@ class HomePage extends StatelessWidget {
       backgroundColor: AppColors.fontWhite,
       body: BlocProvider(
         create: (context) => HomeBloc()..add(LoadCategories()),
-        child: BlocBuilder<HomeBloc, HomeState>(
-          buildWhen: (p, c) => p != c,
-          builder: (context, state) {
-            if (state is HomeLoading) return const HomeSkeletonLoader();
-            if (state is HomeError) {
-              return Center(child: Text("Error: ${state.message}"));
-            }
+        child: Builder(
+          builder: (context) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<HomeBloc>().add(LoadCategories());
+                context.read<BannerSliderCubit>().loadBanners();
+                await context.read<HomeBloc>().stream.firstWhere(
+                  (state) => state is HomeLoaded || state is HomeError,
+                );
+              },
+              color: AppColors.primary,
+              backgroundColor: Colors.white,
+              child: BlocBuilder<HomeBloc, HomeState>(
+                buildWhen: (p, c) => p != c,
+                builder: (context, state) {
+                  if (state is HomeLoading) {
+                    return const SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      child: HomeSkeletonLoader(),
+                    );
+                  }
 
-            if (state is HomeLoaded) {
-              final categories = List<CategoryModel>.from(state.categories)
-                ..shuffle();
-              if (categories.isEmpty) {
-                return const Center(child: Text("No categories found"));
-              }
+                  if (state is HomeError) {
+                    return SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height - 100,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Error: ${state.message}"),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed:
+                                    () => context.read<HomeBloc>().add(
+                                      LoadCategories(),
+                                    ),
+                                child: const Text("Retry"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }
 
-              return CustomScrollView(
-                cacheExtent: 800,
-                physics: const BouncingScrollPhysics(),
-                slivers: [
-                  const SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: AutoSlidingBanner(),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                  SliverList.separated(
-                    itemCount: categories.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: 10),
-                    itemBuilder: (context, index) {
-                      final category = categories[index];
-                      return _CategorySection(
-                        key: ValueKey(category.iD),
-                        category: category,
+                  if (state is HomeLoaded) {
+                    final categories = List<CategoryModel>.from(
+                      state.categories,
+                    )..shuffle();
+
+                    if (categories.isEmpty) {
+                      return const SingleChildScrollView(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        child: SizedBox(
+                          height: 500,
+                          child: Center(child: Text("No categories found")),
+                        ),
                       );
-                    },
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 70)),
-                ],
-              );
-            }
+                    }
 
-            return const SizedBox.shrink();
+                    return CustomScrollView(
+                      cacheExtent: 800,
+                      physics: const AlwaysScrollableScrollPhysics(
+                        parent: BouncingScrollPhysics(),
+                      ),
+                      slivers: [
+                        const SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: AutoSlidingBanner(),
+                          ),
+                        ),
+                        const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                        SliverList.separated(
+                          itemCount: categories.length,
+                          separatorBuilder:
+                              (_, _) => const SizedBox(height: 10),
+                          itemBuilder: (context, index) {
+                            final category = categories[index];
+                            return _CategorySection(
+                              key: ValueKey(category.iD),
+                              category: category,
+                            );
+                          },
+                        ),
+                        const SliverToBoxAdapter(child: SizedBox(height: 70)),
+                      ],
+                    );
+                  }
+
+                  return const SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: SizedBox(height: 500),
+                  );
+                },
+              ),
+            );
           },
         ),
       ),

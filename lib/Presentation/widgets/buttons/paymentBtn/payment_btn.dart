@@ -1,10 +1,14 @@
+// payment_btn.dart
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trendychef/Presentation/widgets/buttons/paymentBtn/bloc/payment_bloc.dart';
+import 'package:trendychef/Presentation/widgets/buttons/paymentBtn/payment_web_view.dart';
 import 'package:trendychef/core/theme/colors.dart';
 import 'package:trendychef/core/services/models/payment.dart';
 import 'package:trendychef/core/l10n/app_localizations.dart';
-import 'package:universal_html/html.dart' as html;
+import 'package:universal_html/html.dart' as html; // used only on web, but safe to import
+import 'package:url_launcher/url_launcher.dart';
 
 class PaymentBtn extends StatefulWidget {
   final PaymentModel payment;
@@ -41,13 +45,49 @@ class _PaymentBtnState extends State<PaymentBtn> {
       return;
     }
 
-    // ✅ Open the popup only if it’s not already open
-    if (_popup == null || _popup!.closed!) {
-      _popup = html.window.open('', '_blank');
+    // Trigger BLoC to get payment URL (your existing flow)
+    context.read<PaymentBloc>().add(InitPayment(payment: widget.payment));
+  }
+
+  Future<void> _openUrlCrossPlatform(String url) async {
+    // Web: open a popup / new tab
+    if (kIsWeb) {
+      try {
+        if (_popup == null || _popup!.closed!) {
+          _popup = html.window.open(url, '_blank');
+        } else {
+          // reuse the popup if already opened
+          _popup!.location.href = url;
+        }
+      } catch (e) {
+        // If popup blocked or error, attempt to open in same tab
+        html.window.location.href = url;
+      }
+      return;
     }
 
-    // Dispatch payment event
-    context.read<PaymentBloc>().add(InitPayment(payment: widget.payment));
+    // Mobile (Android/iOS): try external browser first
+    final uri = Uri.parse(url);
+    try {
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!launched) {
+        // fallback to in-app webview if external browser couldn't be launched
+        if (!mounted) return;
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => PaymentWebViewPage(initialUrl: url)),
+        );
+      }
+    } catch (e) {
+      // On any error, fallback to in-app webview
+      if (!mounted) return;
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => PaymentWebViewPage(initialUrl: url)),
+      );
+    }
   }
 
   @override
@@ -55,14 +95,15 @@ class _PaymentBtnState extends State<PaymentBtn> {
     final lang = AppLocalizations.of(context)!;
 
     return BlocListener<PaymentBloc, PaymentState>(
-      listener: (context, state) {
-        if (_popup == null) return; // safety check
-
+      listener: (context, state) async {
         if (state is PaymentLoaded) {
-          _popup!.location.href = state.url;
+          final url = state.url;
+          await _openUrlCrossPlatform(url);
         } else if (state is PaymentError) {
-          _popup!.close();
-          _popup = null;
+          if (_popup != null) {
+            _popup!.close();
+            _popup = null;
+          }
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error), backgroundColor: Colors.red),
           );
@@ -83,7 +124,10 @@ class _PaymentBtnState extends State<PaymentBtn> {
                 height: 200,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [AppColors.primary, AppColors.primary.withOpacity(0.8)],
+                    colors: [
+                      AppColors.primary,
+                      AppColors.primary.withOpacity(0.8),
+                    ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -117,9 +161,7 @@ class _PaymentBtnState extends State<PaymentBtn> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(24),
-                      child: isLoading
-                          ? _buildLoadingState()
-                          : _buildCardContent(lang),
+                      child: isLoading ? _buildLoadingState() : _buildCardContent(lang),
                     ),
                   ],
                 ),
@@ -278,10 +320,7 @@ class _PaymentBtnState extends State<PaymentBtn> {
 class CardPatternPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white.withOpacity(0.05)
-      ..style = PaintingStyle.fill;
-
+    final paint = Paint()..color = Colors.white.withOpacity(0.05)..style = PaintingStyle.fill;
     const spacing = 60.0;
     for (double x = -spacing; x < size.width + spacing; x += spacing) {
       for (double y = -spacing; y < size.height + spacing; y += spacing) {

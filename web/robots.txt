@@ -1,8 +1,15 @@
+# Allow all user agents (including Googlebot)
 User-agent: *
-# Allow all main content pages
 Allow: /
 
-# Disallow admin, account internals, cart checkout, search queries if irrelevant to SEO
+# Explicitly allow Google crawlers (for Merchant Center & images)
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+# Disallow private or non-SEO pages
 Disallow: /admin/
 Disallow: /login/
 Disallow: /register/
@@ -13,13 +20,12 @@ Disallow: /orders/
 Disallow: /api/
 Disallow: /search/
 
-# (Optional) If you have parameters or filters that produce duplicate content,
-# block crawling of parameter URLs. E.g:
+# (Optional) Prevent crawling of URLs with parameters (avoid duplicates)
 Disallow: /*?*
 Disallow: /*&*
 
-# Sitemap
+# Sitemap location
 Sitemap: https://trendy-c.com/sitemap.xml
 
-# Crawl-delay (optional, in case your server is limited)
+# Optional crawl delay (for smaller servers)
 # Crawl-delay: 10

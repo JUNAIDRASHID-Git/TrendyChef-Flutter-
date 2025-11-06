@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:trendychef/Presentation/home/widget/sections/carousel/cubit/carousel_cubit.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:trendychef/Presentation/home/widget/product_detail_dialog/product_detail_dialog.dart';
 
 class AutoSlidingBanner extends StatelessWidget {
   const AutoSlidingBanner({super.key});
@@ -38,6 +38,7 @@ class AutoSlidingBanner extends StatelessWidget {
                 itemCount: loopedBanners.length,
                 onPageChanged: (index) {
                   cubit.updatePage(index);
+                  // Looping logic for infinite scroll
                   if (index == 0) {
                     Future.delayed(const Duration(milliseconds: 350), () {
                       cubit.controller.jumpToPage(loopedBanners.length - 2);
@@ -51,8 +52,7 @@ class AutoSlidingBanner extends StatelessWidget {
                 itemBuilder: (_, i) {
                   final banner = loopedBanners[i];
                   final imageUrl = banner.imageUrl;
-                  final redirectUrl =
-                      banner.url; // make sure your model has a url field
+                  final redirectUrl = banner.url;
 
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -61,17 +61,27 @@ class AutoSlidingBanner extends StatelessWidget {
                       child: InkWell(
                         onTap:
                             redirectUrl.isNotEmpty
-                                ? () async {
-                                  final uri = Uri.tryParse(redirectUrl);
-                                  if (uri != null && await canLaunchUrl(uri)) {
-                                    await launchUrl(
-                                      uri,
-                                      mode: LaunchMode.externalApplication,
-                                    );
-                                  } else {
+                                ? () {
+                                  try {
+                                    final uri = Uri.parse(redirectUrl);
+                                    if (uri.path.contains('/product') &&
+                                        uri.queryParameters['id'] != null) {
+                                      final productId =
+                                          uri.queryParameters['id']!;
+                                      _openProductDialog(context, productId);
+                                    } else {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Invalid product link'),
+                                        ),
+                                      );
+                                    }
+                                  } catch (e) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                        content: Text('Could not open link'),
+                                        content: Text('Could not parse link'),
                                       ),
                                     );
                                   }
@@ -80,13 +90,8 @@ class AutoSlidingBanner extends StatelessWidget {
                         child: Image.network(
                           imageUrl,
                           fit: BoxFit.fill,
-                          frameBuilder: (
-                            context,
-                            child,
-                            frame,
-                            wasSynchronouslyLoaded,
-                          ) {
-                            if (wasSynchronouslyLoaded) return child;
+                          frameBuilder: (context, child, frame, wasSync) {
+                            if (wasSync) return child;
                             return AnimatedOpacity(
                               opacity: frame == null ? 0 : 1,
                               duration: const Duration(milliseconds: 500),
@@ -110,7 +115,6 @@ class AutoSlidingBanner extends StatelessWidget {
                   );
                 },
               ),
-
               // Page Indicator
               Positioned(
                 bottom: 8,
@@ -137,6 +141,33 @@ class AutoSlidingBanner extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  void _openProductDialog(BuildContext context, String productId) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        barrierColor: Colors.black54,
+        pageBuilder:
+            (_, _, _) => Center(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.height * 0.5,
+                height: MediaQuery.of(context).size.height * 0.8,
+                child: ProductDialogPage(productID: productId),
+              ),
+            ),
+        transitionsBuilder: (_, animation, _, child) {
+          final curved = CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOutBack,
+          );
+          return FadeTransition(
+            opacity: animation,
+            child: ScaleTransition(scale: curved, child: child),
+          );
+        },
+      ),
     );
   }
 }

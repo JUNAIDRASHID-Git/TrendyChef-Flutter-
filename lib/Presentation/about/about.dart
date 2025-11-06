@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trendychef/Presentation/about/widgets/map_container.dart';
 import 'package:trendychef/core/theme/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -215,7 +214,7 @@ class AboutPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 child: Stack(
                   children: [
-                    const Positioned.fill(child: MapContainer()),
+                    // const Positioned.fill(child: MapContainer()),
                     Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(

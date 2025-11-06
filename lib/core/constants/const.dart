@@ -1,4 +1,4 @@
-// final baseHost = "https://api.trendy-c.com";
+
 final baseHost = "https://server.trendy-c.com";
 
 // final baseHost = "http://localhost:8080";

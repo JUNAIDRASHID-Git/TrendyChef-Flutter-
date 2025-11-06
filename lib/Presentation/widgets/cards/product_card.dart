@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:trendychef/Presentation/home/widget/btn/cart_btn.dart';
 import 'package:trendychef/Presentation/home/widget/btn/out_of_stock.dart';
@@ -17,7 +18,6 @@ class ProductCard extends StatelessWidget {
     final lang = AppLocalizations.of(context)!;
     final offerPercentage = _calculateOfferPercentage(product);
 
-    // Stable identity for list/grid reuse
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 8),
       child: Stack(
@@ -45,8 +45,7 @@ class ProductCard extends StatelessWidget {
 
   static int _calculateOfferPercentage(ProductModel p) {
     if (p.regularPrice > 0 && p.salePrice < p.regularPrice) {
-      final perc = (((p.regularPrice - p.salePrice) / p.regularPrice) * 100);
-      return perc.round();
+      return (((p.regularPrice - p.salePrice) / p.regularPrice) * 100).round();
     }
     return 0;
   }
@@ -57,23 +56,26 @@ class ProductCard extends StatelessWidget {
         opaque: false,
         barrierColor: Colors.black54,
         pageBuilder:
-            (_, _,_) => Center(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.height * 0.50,
-                height: MediaQuery.of(context).size.height * 0.80,
+            (_, _, _) => Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth:
+                      kIsWeb
+                          ? 500 // constrain for web screens
+                          : MediaQuery.of(context).size.width * 0.9,
+                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                ),
                 child: ProductDialogPage(productID: productId),
               ),
             ),
         transitionsBuilder: (_, animation, _, child) {
+          final curved = CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOutBack,
+          );
           return FadeTransition(
             opacity: animation,
-            child: ScaleTransition(
-              scale: CurvedAnimation(
-                parent: animation,
-                curve: Curves.easeOutBack,
-              ),
-              child: child,
-            ),
+            child: ScaleTransition(scale: curved, child: child),
           );
         },
       ),
@@ -102,12 +104,12 @@ class ProductCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (icon != null) ...[
-              Icon(icon, color: Colors.white, size: 10),
+              Icon(icon, color: Colors.white, size: 12),
               const SizedBox(width: 3),
             ],
             Text(
               text,
-              style: const TextStyle(color: Colors.white, fontSize: 9),
+              style: const TextStyle(color: Colors.white, fontSize: 10),
             ),
           ],
         ),
@@ -116,7 +118,6 @@ class ProductCard extends StatelessWidget {
   }
 }
 
-/// Small extracted widget for the card body — helps Flutter optimize rebuilding.
 class _CardBody extends StatelessWidget {
   final ProductModel product;
   final String localeName;
@@ -131,7 +132,6 @@ class _CardBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // RepaintBoundary around the visual-heavy child reduces repaint scope.
     return RepaintBoundary(
       child: Material(
         color: Colors.transparent,
@@ -159,7 +159,6 @@ class _CardBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 5),
-                // Product Image with Hero
                 Hero(
                   tag: "product_${product.id}",
                   child: Center(
@@ -170,10 +169,7 @@ class _CardBody extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 5),
-
-                // Product Name
                 SizedBox(
                   height: 40,
                   child: Padding(
@@ -193,15 +189,9 @@ class _CardBody extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 5),
-
-                // Price and Weight
                 _PriceWeightRow(product: product, localeName: localeName),
-
                 const SizedBox(height: 10),
-
-                // Cart Button (centered)
                 Center(
                   child:
                       product.stock == 0
@@ -231,6 +221,21 @@ class _ProductImage extends StatelessWidget {
       return Image.asset("assets/images/trendy_logo.png", fit: BoxFit.cover);
     }
 
+    final imageWidget = Image.network(
+      baseHost + imagePath,
+      fit: BoxFit.cover,
+      width: 150,
+      height: 150,
+      cacheWidth: 300,
+      cacheHeight: 300,
+      filterQuality: FilterQuality.low,
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+      },
+      errorBuilder: (_, _, _) => const Icon(Icons.broken_image, size: 40),
+    );
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -244,29 +249,12 @@ class _ProductImage extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: Image.network(
-          baseHost + imagePath,
-          fit: BoxFit.cover,
-          width: 150,
-          height: 150,
-          cacheWidth: 300,
-          cacheHeight: 300,
-          filterQuality: FilterQuality.low,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return const Center(
-              child: CircularProgressIndicator(strokeWidth: 2),
-            );
-          },
-          errorBuilder:
-              (context, error, stackTrace) => const Icon(Icons.broken_image),
-        ),
+        child: imageWidget,
       ),
     );
   }
 }
 
-/// Price & weight row extracted to reduce re-layout cost
 class _PriceWeightRow extends StatelessWidget {
   final ProductModel product;
   final String localeName;
@@ -331,10 +319,7 @@ class _PriceWeightRow extends StatelessWidget {
 
 class OfferBadge extends StatelessWidget {
   final String percentage;
-  final double? top;
-  final double? left;
-  final double? right;
-  final double? bottom;
+  final double? top, left, right, bottom;
 
   const OfferBadge({
     super.key,
