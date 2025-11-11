@@ -7,7 +7,7 @@ import 'package:trendychef/Presentation/product/widgets/price_container.dart';
 import 'package:trendychef/Presentation/product/widgets/product_details_container.dart';
 import 'package:trendychef/Presentation/widgets/indicators/circular_progress_with_logo.dart';
 import 'package:trendychef/core/theme/colors.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 
 class ProductDialogPage extends StatelessWidget {
   final String productID;

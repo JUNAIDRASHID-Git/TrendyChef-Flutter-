@@ -1,5 +1,5 @@
 name: trendychef
-description: "A new Flutter project."
+description: "Trendy Chef is a modern Flutter-based cross-platform app that lets users explore, shop, and enjoy trendy culinary products with secure login, smooth payments, and a sleek shopping experience across Android, iOS, and web."
 publish_to: 'none'
 
 version: 1.0.0+1

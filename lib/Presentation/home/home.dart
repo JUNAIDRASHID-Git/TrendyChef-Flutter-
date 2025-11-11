@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trendychef/Presentation/category/category.dart';
 import 'package:trendychef/Presentation/home/bloc/home_event.dart';
 import 'package:trendychef/Presentation/home/widget/sections/carousel/cubit/carousel_cubit.dart';
+import 'package:trendychef/Presentation/home/widget/sections/category_chips_buttons/category_chips_buttons.dart';
 import 'package:trendychef/Presentation/widgets/cards/product_card.dart';
 import 'package:trendychef/Presentation/home/widget/shimmer/home_shimmer.dart';
 import 'package:trendychef/Presentation/home/widget/sections/carousel/auto_crousel_slider.dart';
@@ -95,7 +96,13 @@ class HomePage extends StatelessWidget {
                             child: AutoSlidingBanner(),
                           ),
                         ),
-                        const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                        const SliverToBoxAdapter(child: SizedBox(height: 10)),
+
+                        SliverToBoxAdapter(
+                          child: CategoryChipButtons(categories: categories),
+                        ),
+
+                        const SliverToBoxAdapter(child: SizedBox(height: 10)),
                         SliverList.separated(
                           itemCount: categories.length,
                           separatorBuilder:
@@ -155,7 +162,7 @@ class _CategorySection extends StatelessWidget {
         children: [
           _CategoryHeader(title: title, category: category),
           SizedBox(
-            height: 305,
+            height: 318,
             child: ScrollConfiguration(
               behavior: ScrollConfiguration.of(context).copyWith(
                 dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch},
@@ -194,8 +201,9 @@ class _CategoryHeader extends StatelessWidget {
             title,
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: AppColors.primary,
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.bold,
+              color: AppColors.fontBlack.withOpacity(0.7),
             ),
           ),
           const SizedBox(width: 10),
@@ -219,12 +227,7 @@ class _CategoryHeader extends StatelessWidget {
                 () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder:
-                        (_) => CategoryProductPage(
-                          products: category.products ?? [],
-                          categoryTitle: title,
-                          categoryid: category.iD!,
-                        ),
+                    builder: (_) => CategoryProductPage(category: category),
                   ),
                 ),
             child: Row(
@@ -234,7 +237,7 @@ class _CategoryHeader extends StatelessWidget {
                   "View All",
                   style: TextStyle(
                     fontSize: 13,
-                    color: AppColors.primary.withOpacity(0.9),
+                    color: AppColors.fontBlack.withOpacity(0.7),
                     fontWeight: FontWeight.w500,
                   ),
                 ),

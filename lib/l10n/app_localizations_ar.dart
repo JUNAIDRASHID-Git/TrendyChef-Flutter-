@@ -195,5 +195,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get checkorder => 'تحقق من الطلب';
 
   @override
+  String get categories => 'فئات';
+
+  @override
   String get continueshopping => 'مواصلة التسوق';
+
+  @override
+  String get cartemptymessage => 'سلة التسوق الخاصة بك فارغة';
+
+  @override
+  String get deliveryin1to7days => 'التسليم في غضون 1-7 أيام';
 }

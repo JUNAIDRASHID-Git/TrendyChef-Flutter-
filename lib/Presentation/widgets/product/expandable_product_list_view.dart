@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trendychef/Presentation/checkout/bloc/check_out_bloc.dart';
 import 'package:trendychef/core/theme/colors.dart';
 import 'package:trendychef/core/constants/const.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 
 class ExpandableProductList extends StatefulWidget {
   final CheckOutLoaded state;

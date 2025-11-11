@@ -195,5 +195,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checkorder => 'Check Order';
 
   @override
+  String get categories => 'Categories';
+
+  @override
   String get continueshopping => 'Continue Shopping';
+
+  @override
+  String get cartemptymessage => 'Your cart is empty';
+
+  @override
+  String get deliveryin1to7days => 'Delivery in 1–7 days';
 }

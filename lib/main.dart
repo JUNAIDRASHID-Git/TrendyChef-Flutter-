@@ -8,7 +8,9 @@ import 'package:trendychef/core/services/routes/go_routes.dart';
 import 'package:trendychef/Presentation/auth/widgets/apple/bloc/apple_bloc.dart';
 import 'package:trendychef/Presentation/auth/widgets/google/bloc/google_bloc.dart';
 import 'package:trendychef/Presentation/search/bloc/search_bloc.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,13 +18,13 @@ void main() async {
   try {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
-      apiKey: "AIzaSyCkCcI9xWyxcdyfuQHyorkrDvi9IB8_Xn4",
-      authDomain: "trendy-c-57ade.firebaseapp.com",
-      projectId: "trendy-c-57ade",
-      storageBucket: "trendy-c-57ade.firebasestorage.app",
-      messagingSenderId: "156938940217",
-      appId: "1:156938940217:web:73301befe1a655b1c082e8",
-      measurementId: "G-MQLLMN0F5P"
+        apiKey: "AIzaSyCkCcI9xWyxcdyfuQHyorkrDvi9IB8_Xn4",
+        authDomain: "trendy-c-57ade.firebaseapp.com",
+        projectId: "trendy-c-57ade",
+        storageBucket: "trendy-c-57ade.firebasestorage.app",
+        messagingSenderId: "156938940217",
+        appId: "1:156938940217:web:73301befe1a655b1c082e8",
+        measurementId: "G-MQLLMN0F5P",
       ),
     );
   } on FirebaseException catch (e) {
@@ -41,6 +43,7 @@ void main() async {
           ? const Locale('ar')
           : const Locale('en');
 
+  usePathUrlStrategy();
   runApp(MyApp(initialLocale: initialLocale));
 }
 

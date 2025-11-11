@@ -62,5 +62,9 @@
   "orderplaced":"Order Placed",
   "ordersuccessmessage":"Your order has been placed successfully.\nThanks for shopping with us!",
   "checkorder" : "Check Order",
-  "continueshopping" : "Continue Shopping"
+  "categories" : "Categories",
+  "continueshopping" : "Continue Shopping",
+  "cartemptymessage" : "Your cart is empty",
+  "deliveryin1to7days" : "Delivery in 1–7 days"
+
 }

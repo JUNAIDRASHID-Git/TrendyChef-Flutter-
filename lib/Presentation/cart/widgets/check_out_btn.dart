@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:trendychef/Presentation/cart/bloc/cart_state.dart';
 import 'package:trendychef/core/theme/colors.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 
 class CheckoutButton extends StatefulWidget {
   final CartLoaded state;
@@ -51,10 +51,10 @@ class _CheckoutButtonState extends State<CheckoutButton>
   Widget build(BuildContext context) {
     final lang = AppLocalizations.of(context)!;
     return Padding(
-      padding: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 130),
+      padding: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 110),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors.orangeColor,
           minimumSize: const Size(150, 50),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),

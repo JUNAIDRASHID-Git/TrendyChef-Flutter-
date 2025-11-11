@@ -10,7 +10,7 @@ import 'package:trendychef/Presentation/widgets/indicators/circular_progress_wit
 import 'package:trendychef/Presentation/widgets/product/expandable_product_list_view.dart';
 import 'package:trendychef/core/theme/colors.dart';
 import 'package:trendychef/core/services/models/payment.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 
 class CheckOutPage extends StatelessWidget {
   const CheckOutPage({super.key});
@@ -85,6 +85,21 @@ class CheckOutPage extends StatelessWidget {
                           ExpandableProductList(state: state),
                           const SizedBox(height: 10),
                           CheckoutPriceDetails(state: state),
+                          const SizedBox(height: 10),
+                          Container(
+                            height: 50,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey, width: 1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Center(
+                              child: Text(
+                                lang.deliveryin1to7days,
+                                style: TextStyle(fontSize: 22),
+                              ),
+                            ),
+                          ),
                           const SizedBox(height: 20),
                           PaymentBtn(
                             payment: PaymentModel(
@@ -103,6 +118,7 @@ class CheckOutPage extends StatelessWidget {
                             ),
                             shippingCost: state.shippingCost,
                           ),
+                          const SizedBox(height: 50),
                         ],
                       );
                     } else {

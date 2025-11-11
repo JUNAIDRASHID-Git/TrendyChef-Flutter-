@@ -1,49 +1,42 @@
 {
   "project_info": {
-    "project_number": "524030203276",
-    "project_id": "trendy-chef-63c6d",
-    "storage_bucket": "trendy-chef-63c6d.firebasestorage.app"
+    "project_number": "156938940217",
+    "project_id": "trendy-c-57ade",
+    "storage_bucket": "trendy-c-57ade.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:524030203276:android:19b45b5431bb50c060b2a9",
+        "mobilesdk_app_id": "1:156938940217:android:fee32504c35f00f8c082e8",
         "android_client_info": {
           "package_name": "com.example.trendychef"
         }
       },
       "oauth_client": [
         {
-          "client_id": "524030203276-p5tobv454jbu3no0pkcqphlfo40o8a0n.apps.googleusercontent.com",
+          "client_id": "156938940217-3b5ph78k56n7iv16jcfm3th525ajvtn6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.trendychef",
-            "certificate_hash": "3c4549c7580b6e4ad1e6376b5f03c7bf50b55bf6"
+            "certificate_hash": "7ccaa4a9f7f36b60f8bc35550f77f37ab373a0b1"
           }
         },
         {
-          "client_id": "524030203276-d0cttdl95h3mnieijpad29nqmctt9oo4.apps.googleusercontent.com",
+          "client_id": "156938940217-3id5a4qvchsmn6pfpj0bkiuhn6idf0cp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB1yvM74Gk9vr8dAETLw8iW-hb7O3Q7vhM"
+          "current_key": "AIzaSyAx2DM2h3sFpd9VF8OcchIwG_eI12z9np4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "524030203276-d0cttdl95h3mnieijpad29nqmctt9oo4.apps.googleusercontent.com",
+              "client_id": "156938940217-3id5a4qvchsmn6pfpj0bkiuhn6idf0cp.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "524030203276-l1k19e954j2jrrlbjjpimgl74ps8gvh4.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.orderAssistant"
-              }
             }
           ]
         }

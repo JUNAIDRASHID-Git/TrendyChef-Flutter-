@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
@@ -7,10 +6,10 @@ import 'package:trendychef/Presentation/home/widget/formfields/fake_search_btn.d
 import 'package:trendychef/Presentation/home/widget/vedio_cont/vedio_container.dart';
 import 'package:trendychef/Presentation/widgets/containers/language_selector.dart';
 import 'package:trendychef/core/theme/colors.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 
 class BottomNavScreen extends StatefulWidget {
-  final Widget child; // This will be the routed page
+  final Widget child;
   const BottomNavScreen({super.key, required this.child});
 
   @override
@@ -25,7 +24,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     if (location.startsWith('/shop')) return 0;
     if (location.startsWith('/cart')) return 1;
     if (location.startsWith('/profile')) return 2;
-    return 0; // default to shop
+    return 0;
   }
 
   void _onNavBarTap(int index) {
@@ -50,134 +49,175 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
 
     return Scaffold(
       key: scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: AppColors.fontWhite,
-        elevation: 0,
-        toolbarHeight: 75,
-        automaticallyImplyLeading: false,
-        flexibleSpace: SafeArea(
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1200),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // ── Left side: logo + video ──
-                  Row(
-                    children: [
-                      const SizedBox(width: 4),
-                      GestureDetector(
-                        onTap: () => context.go("/home"),
-                        child: SvgPicture.asset(
-                          "assets/images/trendy_logo.svg",
-                          width: 85,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      LoopingVideoWidget(
-                        videoPath:
-                            "https://res.cloudinary.com/dl6hhtug2/video/upload/v1753890815/promo_vedio_t8znza.mp4",
-                      ),
-                    ],
-                  ),
+      backgroundColor: Colors.white,
 
-                  // ── Right side: nav buttons & conditionals ──
-                  Row(
-                    children: [
-                      if (screenWidth > 750) ...[
-                        _navButton(
-                          lang.shop,
-                          0,
-                          selectedIndex,
-                          Iconsax.shop,
-                          _onNavBarTap,
-                        ),
-                        _navButton(
-                          lang.cart,
-                          1,
-                          selectedIndex,
-                          Iconsax.shopping_cart,
-                          _onNavBarTap,
-                        ),
-                        _navButton(
-                          lang.profile,
-                          2,
-                          selectedIndex,
-                          Iconsax.user,
-                          _onNavBarTap,
-                        ),
-                      ],
-                      if (selectedIndex == 0) ...[
-                        const SizedBox(width: 16),
-                        SizedBox(
-                          width: 150,
-                          height: 50,
-                          child: searchFieldButton(context),
-                        ),
-                        const SizedBox(width: 8),
-                        const LanguageSelector(),
-                        const SizedBox(width: 2),
-                      ],
-                      if (screenWidth < 750 &&
-                          (selectedIndex == 1 || selectedIndex == 2)) ...[
-                        const SizedBox(width: 20),
-                        Row(
-                          children: [
-                            Icon(
-                              selectedIndex == 1
-                                  ? Iconsax.shopping_cart
-                                  : Iconsax.user,
-                              color: AppColors.primary,
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              selectedIndex == 1 ? lang.cart : lang.profile,
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: "Poppins",
-                                color: AppColors.primary,
-                                letterSpacing:
-                                    lang.localeName == "en" ? 0.5 : 0,
+      extendBody: true,
+      body: NestedScrollView(
+        headerSliverBuilder:
+            (context, innerBoxIsScrolled) => [
+              SliverAppBar(
+                backgroundColor: AppColors.fontWhite,
+                pinned: false,
+                toolbarHeight: selectedIndex == 0 ? 120 : 60,
+                elevation: 0,
+                automaticallyImplyLeading: false,
+                flexibleSpace: SafeArea(
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 1200),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              if (lang.localeName == "en")
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                  ),
+                                  child: Text(
+                                    "Trendy Chef",
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontFamily: "logofont",
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ),
+
+                              if (lang.localeName == "ar")
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                  ),
+                                  child: Text(
+                                    "الشيف العصري",
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ),
+
+                              // Right side (nav buttons, language, etc.)
+                              Row(
+                                children: [
+                                  if (screenWidth > 750) ...[
+                                    _navButton(
+                                      lang.shop,
+                                      0,
+                                      selectedIndex,
+                                      Iconsax.shop,
+                                      _onNavBarTap,
+                                    ),
+                                    _navButton(
+                                      lang.cart,
+                                      1,
+                                      selectedIndex,
+                                      Iconsax.shopping_cart,
+                                      _onNavBarTap,
+                                    ),
+                                    _navButton(
+                                      lang.profile,
+                                      2,
+                                      selectedIndex,
+                                      Iconsax.user,
+                                      _onNavBarTap,
+                                    ),
+                                  ],
+                                  if (selectedIndex == 0) ...[
+                                    const LanguageSelector(),
+                                    const SizedBox(width: 10),
+                                  ],
+                                  if (screenWidth < 750 &&
+                                      (selectedIndex == 1 ||
+                                          selectedIndex == 2)) ...[
+                                    const SizedBox(width: 20),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          selectedIndex == 1
+                                              ? Iconsax.shopping_cart
+                                              : Iconsax.user,
+                                          color: AppColors.primary,
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          selectedIndex == 1
+                                              ? lang.cart
+                                              : lang.profile,
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: "Poppins",
+                                            color: AppColors.primary,
+                                            letterSpacing:
+                                                lang.localeName == "en"
+                                                    ? 0.5
+                                                    : 0,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 20),
+                                      ],
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ],
+                          ),
+                          if (selectedIndex == 0)
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 50,
+                                      child: searchFieldButton(context),
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  LoopingVideoWidget(
+                                    videoPath:
+                                        "https://res.cloudinary.com/dl6hhtug2/video/upload/v1753890815/promo_vedio_t8znza.mp4",
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(width: 20),
-                          ],
-                        ),
-                      ],
-                    ],
+                        ],
+                      ),
+                    ),
                   ),
-                ],
+                ),
               ),
+            ],
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.white, Colors.grey.shade200],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                    ),
+                  ),
+                ),
+                widget.child,
+              ],
             ),
           ),
         ),
       ),
 
-      backgroundColor: Colors.white,
-      extendBody: true,
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.white, Colors.grey.shade200],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                  ),
-                ),
-              ),
-              widget.child, // Routed page here
-            ],
-          ),
-        ),
-      ),
-
+      // Bottom Navigation (mobile only)
       bottomNavigationBar:
           screenWidth < 750
               ? Padding(

@@ -6,4 +6,6 @@ class AppColors {
   static Color fontBlack = const Color.fromARGB(255, 0, 0, 0);
   static Color fontWhite = const Color.fromARGB(255, 255, 255, 255);
   static Color blueColor = Colors.blue;
+  static Color orangeColor = Colors.deepOrange;
+
 }

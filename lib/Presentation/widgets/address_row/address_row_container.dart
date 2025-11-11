@@ -4,7 +4,7 @@ import 'package:trendychef/Presentation/widgets/address_row/address_edit_dialog.
 import 'package:trendychef/Presentation/widgets/address_row/address_row_info.dart';
 import 'package:trendychef/Presentation/widgets/address_row/bloc/address_bloc.dart';
 import 'package:trendychef/core/theme/colors.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 
 class ExpandableAddressRow extends StatefulWidget {
   final bool isExpanded; // initial state

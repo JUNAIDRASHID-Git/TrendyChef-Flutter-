@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trendychef/core/services/api/auth/logout.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 
 ElevatedButton logOutBtn(BuildContext context) {
   final lang = AppLocalizations.of(context)!;

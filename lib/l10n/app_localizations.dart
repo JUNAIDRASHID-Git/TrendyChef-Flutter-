@@ -467,11 +467,29 @@ abstract class AppLocalizations {
   /// **'Check Order'**
   String get checkorder;
 
+  /// No description provided for @categories.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get categories;
+
   /// No description provided for @continueshopping.
   ///
   /// In en, this message translates to:
   /// **'Continue Shopping'**
   String get continueshopping;
+
+  /// No description provided for @cartemptymessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cart is empty'**
+  String get cartemptymessage;
+
+  /// No description provided for @deliveryin1to7days.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery in 1–7 days'**
+  String get deliveryin1to7days;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

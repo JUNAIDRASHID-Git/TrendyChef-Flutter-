@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trendychef/Presentation/checkout/bloc/check_out_bloc.dart';
 import 'package:trendychef/Presentation/checkout/widgets/price_row.dart';
 import 'package:trendychef/core/theme/colors.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 
 class CheckoutPriceDetails extends StatelessWidget {
   final CheckOutLoaded state;

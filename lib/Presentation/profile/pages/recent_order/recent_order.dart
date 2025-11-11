@@ -7,7 +7,7 @@ import 'package:trendychef/Presentation/widgets/indicators/circular_progress_wit
 import 'package:trendychef/core/theme/colors.dart';
 import 'package:trendychef/core/constants/const.dart';
 import 'package:trendychef/core/services/models/order.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 
 class RecentOrders extends StatelessWidget {
   const RecentOrders({super.key});

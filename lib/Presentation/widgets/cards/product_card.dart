@@ -6,7 +6,7 @@ import 'package:trendychef/Presentation/home/widget/product_detail_dialog/produc
 import 'package:trendychef/core/theme/colors.dart';
 import 'package:trendychef/core/constants/const.dart';
 import 'package:trendychef/core/services/models/product.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
@@ -149,11 +149,6 @@ class _CardBody extends StatelessWidget {
                   offset: Offset(0, 3),
                 ),
               ],
-              image: const DecorationImage(
-                image: AssetImage("assets/images/bg.png"),
-                fit: BoxFit.cover,
-                opacity: 0.06,
-              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,9 +157,17 @@ class _CardBody extends StatelessWidget {
                 Hero(
                   tag: "product_${product.id}",
                   child: Center(
-                    child: SizedBox(
-                      width: 140,
-                      height: 140,
+                    child: Container(
+                      width: 160,
+                      height: 160,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primary.withOpacity(0.02),
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
                       child: _ProductImage(imagePath: product.image),
                     ),
                   ),
@@ -220,12 +223,8 @@ class _ProductImage extends StatelessWidget {
     if (imagePath.isEmpty) {
       return Image.asset("assets/images/trendy_logo.png", fit: BoxFit.cover);
     }
-
-    final imageWidget = Image.network(
+    return Image.network(
       baseHost + imagePath,
-      fit: BoxFit.cover,
-      width: 150,
-      height: 150,
       cacheWidth: 300,
       cacheHeight: 300,
       filterQuality: FilterQuality.low,
@@ -234,23 +233,6 @@ class _ProductImage extends StatelessWidget {
         return const Center(child: CircularProgressIndicator(strokeWidth: 2));
       },
       errorBuilder: (_, _, _) => const Icon(Icons.broken_image, size: 40),
-    );
-
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: imageWidget,
-      ),
     );
   }
 }

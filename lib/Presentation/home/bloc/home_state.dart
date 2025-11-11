@@ -8,7 +8,8 @@ class HomeLoading extends HomeState {}
 
 class HomeLoaded extends HomeState {
   final List<CategoryModel> categories;
-  HomeLoaded(this.categories);
+  final String userName;
+  HomeLoaded({required this.categories, required this.userName});
 }
 
 class HomeError extends HomeState {

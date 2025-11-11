@@ -6,7 +6,7 @@ import 'package:trendychef/Presentation/widgets/buttons/paymentBtn/bloc/payment_
 import 'package:trendychef/Presentation/widgets/buttons/paymentBtn/payment_web_view.dart';
 import 'package:trendychef/core/theme/colors.dart';
 import 'package:trendychef/core/services/models/payment.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 import 'package:universal_html/html.dart' as html; // used only on web, but safe to import
 import 'package:url_launcher/url_launcher.dart';
 

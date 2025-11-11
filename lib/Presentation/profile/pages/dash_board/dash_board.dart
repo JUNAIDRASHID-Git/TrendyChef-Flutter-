@@ -6,7 +6,7 @@ import 'package:trendychef/Presentation/profile/pages/dash_board/bloc/user_dash_
 import 'package:trendychef/Presentation/widgets/address_row/address_row_container.dart';
 import 'package:trendychef/Presentation/widgets/address_row/bloc/address_bloc.dart';
 import 'package:trendychef/Presentation/widgets/indicators/circular_progress_with_logo.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});

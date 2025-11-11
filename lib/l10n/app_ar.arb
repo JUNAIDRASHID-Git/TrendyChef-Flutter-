@@ -62,5 +62,8 @@
   "orderplaced":"تم تقديم الطلب",
   "ordersuccessmessage":"لقد تم تقديم طلبك بنجاح. شكرًا لك على التسوق معنا!",
   "checkorder" : "تحقق من الطلب",
-  "continueshopping" : "مواصلة التسوق"
+  "categories" : "فئات",
+  "continueshopping" : "مواصلة التسوق",
+  "cartemptymessage": "سلة التسوق الخاصة بك فارغة",
+  "deliveryin1to7days" : "التسليم في غضون 1-7 أيام"
 }

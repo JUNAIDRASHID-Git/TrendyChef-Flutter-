@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:trendychef/Presentation/widgets/cards/product_card.dart';
+import 'package:trendychef/core/services/models/category.dart';
 import 'package:trendychef/core/theme/colors.dart';
-import 'package:trendychef/core/services/models/product.dart';
 
 class CategoryProductPage extends StatelessWidget {
-  final String categoryTitle;
-  final int categoryid;
-  final List<ProductModel> products;
+  final CategoryModel category;
 
-  const CategoryProductPage({
-    super.key,
-    required this.categoryTitle,
-    required this.products,
-    required this.categoryid,
-  });
+  const CategoryProductPage({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -31,47 +24,56 @@ class CategoryProductPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.fontWhite,
-      appBar: AppBar(
-        backgroundColor: AppColors.fontWhite,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back, color: AppColors.primary),
-        ),
-        title: Hero(
-          tag: "category_products_$categoryid",
-          child: Text(
-            categoryTitle,
-            style: TextStyle(
-              color: AppColors.primary,
-              fontSize: 28,
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
+
+      // appBar: AppBar(
+      //   backgroundColor: AppColors.fontWhite,
+      //   leading:
       body: Column(
         children: [
-          Expanded(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return GridView.builder(
-                  padding: const EdgeInsets.all(1.0),
-                  itemCount: products.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    mainAxisSpacing: 12,
-                    crossAxisSpacing: 12,
-                    childAspectRatio: 0.55, // Adjusted instead of fixed extent
+          Row(
+            children: [
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(Icons.arrow_back, color: AppColors.primary),
+              ),
+              Hero(
+                tag: "category_products_${category.iD}",
+                child: Text(
+                  category.ename,
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 22,
+                    fontFamily: "Poppins",
+                    fontWeight: FontWeight.bold,
                   ),
-                  itemBuilder: (context, index) {
-                    return ProductCard(product: products[index]);
-                  },
-                );
-              },
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 100),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return GridView.builder(
+                    padding: const EdgeInsets.all(1.0),
+                    itemCount: category.products!.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                      childAspectRatio:
+                          0.55, // Adjusted instead of fixed extent
+                    ),
+                    itemBuilder: (context, index) {
+                      final products = category.products!;
+                      return ProductCard(product: products[index]);
+                    },
+                  );
+                },
+              ),
             ),
           ),
-          SizedBox.shrink(),
         ],
       ),
     );

@@ -5,7 +5,7 @@ import 'package:trendychef/Presentation/checkout/bloc/check_out_bloc.dart';
 import 'package:trendychef/Presentation/widgets/address_row/bloc/address_bloc.dart';
 import 'package:trendychef/Presentation/widgets/textFIelds/text_field.dart';
 import 'package:trendychef/core/services/models/user_model.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 
 void showEditDialog(BuildContext context, Address address, String phone) {
   final formKey = GlobalKey<FormState>();

@@ -6,7 +6,7 @@ import 'package:trendychef/Presentation/widgets/buttons/log_out_btn/log_out_btn.
 import 'package:trendychef/core/theme/colors.dart';
 import 'package:trendychef/core/services/api/user/get.dart';
 import 'package:trendychef/core/services/models/user_model.dart';
-import 'package:trendychef/core/l10n/app_localizations.dart';
+import 'package:trendychef/l10n/app_localizations.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
